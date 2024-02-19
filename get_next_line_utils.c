@@ -6,7 +6,7 @@
 /*   By: pwanakit <pwanakit@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 12:10:10 by pwanakit          #+#    #+#             */
-/*   Updated: 2024/01/07 17:56:42 by pwanakit         ###   ########.fr       */
+/*   Updated: 2024/02/20 01:24:54 by pwanakit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-int	ft_strlen(const char *str)
+unsigned int	ft_strlen(const char *str)
 {
 	int	i;
 
@@ -46,10 +46,10 @@ char	*ft_strjoin(const char *s1, const char *s2)
 	size_t	j;
 	char	*str;
 
-	if (s1 == NULL || s2 == NULL)
+	if (!s1 || !s2)
 		return (NULL);
 	str = malloc(sizeof(char *) * (ft_strlen(s1) + ft_strlen(s2) + 1));
-	if (str == NULL)
+	if (!str)
 		return (NULL);
 	i = 0;
 	j = 0;
@@ -62,26 +62,47 @@ char	*ft_strjoin(const char *s1, const char *s2)
 	return (str);
 }
 
-void	ft_bzero(void *s, size_t n)
+char	*ft_strdup(const char *s1)
 {
-	size_t			i;
-	unsigned char	*s1;
+	char	*s2;
+	int		i;
 
-	s1 = (unsigned char *)s;
 	i = 0;
-	while (n--)
-		(s1)[i++] = '\0';
+	s2 = malloc((ft_strlen(s1) + 1) * sizeof(char));
+	if (s2 == NULL)
+		return (s2);
+	while (s1[i] != '\0')
+	{
+		s2[i] = s1[i];
+		i++;
+	}
+	s2[i] = '\0';
+	return (s2);
 }
 
-void	*ft_calloc(size_t count, size_t size)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*ptr;
+	char	*str;
+	size_t	i;
+	size_t	j;
 
-	if (count >= SIZE_MAX || size >= SIZE_MAX)
+	if (!s)
 		return (NULL);
-	ptr = malloc(count * size);
-	if (ptr == NULL)
+	if (start >= ft_strlen(s) || !*s)
+		len = 0;
+	else if (ft_strlen(s) - start < len)
+		len = ft_strlen(s) - start;
+	str = malloc((len + 1) * sizeof(char));
+	i = 0;
+	j = start;
+	if (str == NULL)
 		return (NULL);
-	ft_bzero(ptr, count * size);
-	return (ptr);
+	while (i < len)
+	{
+		str[i] = s[j];
+		i++;
+		j++;
+	}
+	str[i] = '\0';
+	return (str);
 }
